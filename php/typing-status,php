@@ -1,0 +1,20 @@
+<?php
+session_start();
+include_once "config.php";
+
+if (isset($_SESSION['unique_id'])) {
+    $outgoing_id = $_SESSION['unique_id'];
+    $incoming_id = mysqli_real_escape_string($conn, $_POST['incoming_id']);
+    $is_typing = $_POST['typing'] === "true";
+
+    $sql = "UPDATE users SET typing_status = " . ($is_typing ? 1 : 0) . " WHERE unique_id = '$outgoing_id'";
+    mysqli_query($conn, $sql);
+
+    // Fetch the typing status
+    if ($is_typing) {
+        echo "Typing...";
+    } else {
+        echo "";
+    }
+}
+?>
